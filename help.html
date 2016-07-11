@@ -1,0 +1,91 @@
+<link rel="stylesheet" type="text/css" href="popup.css">
+
+<style>
+
+	body  {  
+		padding: 30px;
+		padding-top: 0px;
+		width: 600px;  
+		
+	}
+
+	#content {
+		font-family: Optima, Segoe, 'Segoe UI', Candara, Calibri, Arial, sans-serif;
+	}
+
+
+	/*#logo {
+		text-align: right;
+		font-family: 'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
+		color: #DDD;
+	    font-size: larger;
+	    font-weight: 200;
+	    font-style: italic;
+	}*/
+
+	#background_image  {
+		position: absolute;
+		height: 515px;
+		width: 600px;
+		z-index: -25;
+		background-repeat: no-repeat;
+	    background-image: url('images/icon_128.png');        
+	    background-position: center;
+	    opacity: 0.05;
+	}
+
+	.red_btn  {
+		color: #F00;
+		font-weight: bold;
+	}
+
+	.bad_link  {	
+		opacity: 0.9; 
+		text-decoration: line-through !important;
+		-webkit-filter: blur(1px) grayscale(70%);
+	}
+
+	.good_link  {
+		background: rgba(255, 181, 0, 0.41);  }
+
+	.rotate {
+		display: inline-block;
+		-webkit-transform: rotate(-2deg);  
+	}
+
+	#the_crap {
+		text-decoration: none;
+		color: #222;
+		font-style: italic;
+	}
+
+</style>
+
+
+<html><body>
+<a id="title_bar" href="popup.html">Black Lister</a>
+
+<div id="content">
+	<div id="background_image"></div>
+	<br><br>
+	Black Lister is a browser extension which allows you to highlight pages you like and black out webpages you'd like to never see again.  It is especially effective when paired with a search engine.
+
+	<h2>How to Use</h2>
+	If you don't like a web page, click the <span class="red_btn">big red button</span>.  Links to it from any other site will appear <span class="bad_link">fuzzy and grey</span> for as long as it is blammed.  Also, the page itself will have a giant mushroom cloud explosion obfuscating it.  Should you want to use the site anyways, just click the button in the center of the screen that says "view anyways."
+	<br><br>
+	If you really like a web page and want to see links to it more easily, <span class="good_link">highlight it.</span>  Links to it from any other site will be <span class="good_link">highlighted</span>.
+
+	<h2>Checking and Editing your Lists</h2>
+	There is a settings section for advanced users.  In the settings section you can look at either your "Black List" of blammed sites or your "A List" of highlighted sites.  To remove any site from it's list, click the minus button next to it.  To add a site to a list, use the input bar at the top.
+	
+
+	<h2>Advanced Users</h2>
+	When this app checks links to see if they are to be blammed, highlighted, or left alone it checks if the whole name on the list exists in the link.  For example www.w3schools.org exists in www.w3schools.org/junk.  But if you only wanted the junk page and all subpages to be on a list, you could use a custom list item and narrow down the matching links.  For example 
+	www.w3schools.org/junk does not exist in www.w3schools.org though it does exist in www.w3schools.org/junk/more_junk.
+	<br><br>
+	<br><br>
+	Anyways, Thanks for using the App! <br>
+	<span class="rotate">Seph Reed</span>
+</div>
+
+</body></html>
