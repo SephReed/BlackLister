@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Black Lister",
-  "version": "0.0.2",
+  "version": "0.0.4",
 
   "description": "Remove dumpy sites from your life",
 
@@ -22,7 +22,7 @@
     {
       "run_at" : "document_end",
       "matches": [ "http://*/*", "https://*/*", "<all_urls>" ],
-      "js": ["modify_css.js"],
+      "js": ["list_tools.js", "modify_css.js"],
       "css": ["black_lister.css"]
     }
   ],

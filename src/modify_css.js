@@ -3,63 +3,6 @@
 //This code retrieves the color codes for specific parts and them applies
 //them to all elements listed under that part in elements_and_settings.json
 
-///---------Include list_tools.js------------------------------
-function Link(url)  {
-   this.url = url;
-   this.hits = 0;
-}
-
-
-function findMatchingLink(url, list) {
-    var target = findMatchingLinkIndex(url, list);
-    if(target != -1)  {  return list[target];  }
-    else return null;
-}   
-
-function findMatchingLinkIndex(url, list) {
-    if(list == null)  { return -1; }
-    
-    for (var i = 0; i < list.length; i++)  {
-        if(checkUrlForListItem(url, list[i].url) == true) {
-            return i;  
-        }
-    }   
-    return -1;
-} 
-
-function checkUrlForListItem(url, itemText) {
-    var target_index = url.indexOf(itemText);
-
-    //if the list url is found in this link
-    if(target_index != -1) {
-
-        //if it begins the link, good
-        if(target_index == 0)
-            return true;
-
-        //if it is not prepended by a letter, character, or dash, it's not part of the domain name, good
-        else {
-            var prev_char = url.charAt(target_index - 1);
-            var matches = prev_char.match(/[\w\n-]/g);
-            if(matches == null)
-                return true;
-        }
-    }  
-
-    return false;
-}
-
-
-function removeMatchingLink(url, list) {
-    var target = findMatchingLinkIndex(url, list);
-    if(target != -1)  {  list.splice(target, 1);   return true;  }
-    return false;
-}   
-///---------------------------------------------------------------
-
-
-
-var currentlyDuckDuckGo = false;//checkUrlForListItem(document.URL, "duckduckgo.");
 
 
 
@@ -70,7 +13,10 @@ var a_list;
 browser.storage.local.get('black_list', function(result){
     if(result.black_list != null)  {  
         black_list = result.black_list;  }
-    else {  black_list = ["microsoft.", "w3schools.", "jquery.", "facebook."];  }
+    else {  
+        black_list = ["msdn.microsoft.", "w3schools.", "jquery.", "facebook."].map(function(url) { return new Link(url)});  
+        chrome.storage.local.set({ 'black_list' : black_list  }, function() {}); 
+    }
 
     if(findMatchingLinkIndex(document.URL, black_list) != -1) {
         nukePage();
@@ -83,7 +29,10 @@ browser.storage.local.get('black_list', function(result){
 browser.storage.local.get('a_list', function(result){
     if(result.a_list != null)  {  
         a_list = result.a_list;  }
-    else {  a_list = ["wikipedia.", "css-tricks.", "lifehacker.", "mozilla."];  }
+    else {  
+        a_list = ["wikipedia.", "css-tricks.", "lifehacker.", "mozilla."].map(function(url) { return new Link(url)});  
+        chrome.storage.local.set({ 'a_list' : a_list  }, function() {}); 
+    }
 
     applyList(a_list, "good_link");
 });
@@ -105,10 +54,9 @@ function applyList(list, className)  {
             var observer = new MutationObserver(function(mutations) {
                 mutations.forEach ( function (mutation) {
                     var newNodes = mutation.addedNodes;
-                    
+
                     for(var i = 0; i < newNodes.length; i++) {
                         if(newNodes[i].nodeName.charAt(0) != "#")  {
-                            // console.log(newNodes[i].nodeName.charAt(0));
                             modLinks(newNodes[i], list, className);
 
                     }   }
@@ -118,8 +66,8 @@ function applyList(list, className)  {
             var config = { childList: true, subtree: true };
             observer.observe(document.body, config);
 
-            modLinks(document.body, list, className);
-
+            
+            modLinks(document.body, list, className);   
         }
     }, 50);
 }
@@ -142,30 +90,33 @@ function findParentWithClass(root, className) {
 
 
 
-function modLinks(nodeTree, list, className) {
+function modLinks(root, list, className) {
         //
-    var links = nodeTree.getElementsByTagName('a');
+    var links = root.getElementsByTagName('a');
 
-    if(links != undefined)  {
-        for(var i = 0; i < links.length; i++)  {
-            var link = links[i];
-
-            for(var j = 0; j < list.length; j++) {
-                    //
+    for(var i = 0; links && i < links.length; i++) { 
+        modLink(links[i], list, className);    
+    }
+}
 
 
-                // if(link.href.indexOf(list[j].url) != -1) {
-                if(checkUrlForListItem(link.href, list[j].url) == true) {
-                    link.classList.add(className);
-                    j = list.length;
 
+var currentlyDuckDuckGo = false;//checkUrlForListItem(document.URL, "duckduckgo.");
 
-                    if(currentlyDuckDuckGo && list == black_list) {
-                        var result = findParentWithClass(link, "result");
-                        if(result)
-                            result.style.display = "none";
-                    }
-                }
+function modLink(link, list, className) {
+    if(!link || !link.href || link.classList.contains(className))
+        return;
+
+    for(var j = 0; j < list.length; j++) {
+            //
+        if(checkUrlForListItem(link.href, list[j].url) == true) {
+            link.classList.add(className);
+            j = list.length;
+
+            if(currentlyDuckDuckGo && list == black_list) {
+                var result = findParentWithClass(link, "result");
+                if(result)
+                    result.style.display = "none";
             }
         }
     }
@@ -177,8 +128,6 @@ function modLinks(nodeTree, list, className) {
 var nuke;
 
 function nukePage()  {
-    console.log("hi");
-
     if(nuke === undefined) {
         nuke = document.createElement('div');
         nuke.id = "nuke_overlay";
@@ -188,13 +137,11 @@ function nukePage()  {
 
         var blammedText = document.createElement('div');
         blammedText.id = "page_blammed_textbox";
-        blammedText.innerHTML = "BLAMMED!<br>You should probably go to a different site<br>";
-        // blammedText.innerHTML += "<input type = 'button' value = 'View Anyways' onClick = 'clearNuke()'>";
+        blammedText.textContent = "BLAMMED!<br>You should probably go to a different site<br>";
 
         var viewAnyways = document.createElement('button');
         viewAnyways.id = "view_anyways";
-        viewAnyways.innerHTML = "View Anyways";
-        // viewAnyways.onClick = clearNuke;
+        viewAnyways.textContent = "View Anyways";
 
         nuke.appendChild(nukeImage);
         nuke.appendChild(blammedText);

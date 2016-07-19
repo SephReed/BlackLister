@@ -1,23 +1,19 @@
+<html>
+
+<head>
+
 <link rel="stylesheet" type="text/css" href="popup.css">
 
 <style>
     body {
         min-width:  525px; 
         margin: 0px; 
-        /*background-color: #CDCECD;*/
-        /*background-color: #438588;*/
         background-color: #EFE8DF;
-        /*background-image: url('images/icon_128.png');        */
     }
     button { 
-        /*margin: 2px;
-        margin-right: 8px;  
-        border: solid;*/
         font-weight: bold;
         border-width: 2px;
         border-radius: 6px;
-        /*background: rgba(0,0,0,0.3);  
-        background-color: #DDD;*/
         box-shadow: 1px 1px rgba(0,0,0,0.2);  }
 
 
@@ -30,14 +26,20 @@
     }
 
     .unblock_item {
+        cursor: pointer;
         padding: 0px;
         padding-bottom: 2px;
-        height: 15px;
-        width: 15px;
+        height: 20px;
+        width: 20px;
         line-height: 0.0;
 
         margin: 2px;
         margin-right: 8px;  
+
+        border-color: #C5353566;
+        color: #FFF;   
+        background-color: #DC4040;
+        text-shadow: 1px 1px 2px #296516;
     }
 
 
@@ -50,12 +52,6 @@
         padding-bottom: 2px;
     }
 
-    .unblock_item {
-        border-color: #C53535;
-        color: #FFF;   
-        background-color: #DC4040;
-        text-shadow: 1px 1px 2px #296516;
-    }
 
     #blam_add_me {
         background-color: black;
@@ -69,10 +65,9 @@
     }
 
     #black_list_btn, #a_list_btn {
-        -webkit-filter:  grayscale(40%);
+        filter:  grayscale(40%);
         margin: -6px;
-        border-color: #888;
-        /*border: none;*/
+        
         position: relative;
         left: 5px;
         float: right;
@@ -80,34 +75,25 @@
         margin-top: 0px;
         height: 120;
         width: 100;
-        /*/*border-top-right-radius: 0px;*/
-        /*border-bottom-right-radius: 0px;*/
-
-        /*border-top-left-radius: 0px;
-        border-bottom-left-radius: 0px;*/
-        border-radius: 0px;
-        /*background-image: url("/images/blacklist.png");*/
-        background-size: contain;
+        
+        background-size: 95% auto;
         background-repeat: no-repeat;
         background-position: center;
         text-align: bottom;
 
         background-color: transparent;
-        border-style: none;
+        
+        border-color: transparent;
+        border-style: dashed;
+
         box-shadow: none;
     }
 
     #black_list_btn.button_on, #a_list_btn.button_on {
-        -webkit-filter: grayscale(0%);
-        /*width: 105;*/
-        /*top:-2px;*/
-        border-style: dashed;
-        /*top: 1px;*/
-        /*left: 5px;*/
+        filter: grayscale(0%);
+        background-size: 105% auto;
         z-index: 5;
-        border-radius: 8px;
-        /*background-color: #FAFAFA;*/
-        /*box-shadow: -1px 1px rgba(0,0,0,0.2);*/
+        border-color: #888;
     }
 
     #black_list_btn {
@@ -116,32 +102,9 @@
     #a_list_btn {
         background-image: url("/images/A_list_150x150.png");  }
 
-/*    #black_list_btn {
-        color: #FAFAFA;
-        background-color: #282827;
-        text-shadow: -1px 0px 2px #222, 
-            1px 0px 2px #222, 
-            0px -1px 2px #222,  
-            0px 1px 2px #222;
-        border-top-style: none;
-        background-image: url("/images/blacklist_100x100.png");
-    }
-
-    #a_list_btn {
-        color: #222;
-        background-color: #FAFAFA;
-        text-shadow: -1px 0px 2px #FAFAFA, 
-            1px 0px 2px #FAFAFA, 
-            0px -1px 2px #FAFAFA,  
-            0px 1px 2px #FAFAFA;
-        background-image: url("/images/A_list_150x150.png");
-    }*/
-
     #viewport {
         border-color: #888;
-        /*z-index: 5;*/
         position: relative;
-        /*float: left;*/
         width: 390px;
         min-height: 300px;
         overflow: auto;
@@ -152,20 +115,15 @@
         border-width: 2px;
         margin-left: 15px;
         box-shadow: 0px 0px 34px rgb(255, 255, 255);
-        /*border-radius: 6px;*/
-        /*padding: 20px;*/
     }
 
     #sidebar {
-        /*pointer-events: none;*/
         top: 0px;
-        /*width: 106px;*/
         width: 100px;
         display: inline-block;
         float: left;
         padding-top: 5px;
         padding-right: 0px;
-        /*position: absolute;*/
     }
 
     #the_black_list, #the_a_list  {
@@ -178,14 +136,11 @@
     #the_black_list {
         color: #D24B4B;
         background-color: #282827;
-        /*font-weight: bold;
-        font-size: large;*/
     }
 
     #the_a_list {
         display: none;
         font-family: Optima, Segoe, 'Segoe UI', Candara, Calibri, Arial, sans-serif;
-        /*font-style: italic;*/
     }
 
     .good_link  {
@@ -196,9 +151,13 @@
         font-size: 40;
     }
 
+    .list_item {
+        margin-bottom: 5px;
+    }
+
     
 </style>
-
+</head>
 
 
 <body>
@@ -231,10 +190,10 @@
 </body>
 
 
-
-
+<script type="text/javascript" src="list_tools.js"></script>
 <script type="text/javascript" src="black_list.js"></script>
 
 
 
 
+</html>

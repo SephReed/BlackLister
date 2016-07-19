@@ -4,3 +4,4 @@ function showPageAction( tabId, changeInfo, tab ) {
 };
 // Call the above function when the url of a tab changes.
 chrome.tabs.onUpdated.addListener(showPageAction);
+
